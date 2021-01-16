@@ -18,7 +18,6 @@ class LoginPageState extends State<LoginPage> {
   @override
   initState() {
     super.initState();
-    print("::::::::::: initState ::::::::::::::::::");
   }
 
   Future<void> _showDialogError(String title) async {
@@ -48,7 +47,7 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  void handlerOnSubmit() async {
+  void handleOnSubmit() async {
     setState(() {
       loading = true;
     });
@@ -108,7 +107,7 @@ class LoginPageState extends State<LoginPage> {
               child: Text("Sign In"),
               color: Colors.green,
               textColor: Colors.white,
-              onPressed: loading ? null : () => handlerOnSubmit())
+              onPressed: loading ? null : () => handleOnSubmit())
         ]),
       ),
     ));
