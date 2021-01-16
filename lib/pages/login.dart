@@ -13,6 +13,7 @@ class LoginPageState extends State<LoginPage> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController userPasswordController = TextEditingController();
   User user;
+  bool loading = false;
 
   @override
   initState() {
@@ -47,6 +48,30 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
+  void handlerOnSubmit() async {
+    setState(() {
+      loading = true;
+    });
+    if (_formLoginKey.currentState.validate()) {
+      authService
+          .login(userNameController.text, userPasswordController.text)
+          .then((response) {
+        setState(() {
+          user = response;
+          loading = false;
+        });
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DasdhboradPage()));
+      }).catchError((error) {
+        setState(() {
+          loading = false;
+        });
+        return this._showDialogError(error.toString());
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,56 +79,37 @@ class LoginPageState extends State<LoginPage> {
       key: _formLoginKey,
       child: Padding(
         padding: const EdgeInsets.all(30),
-        child: Column(
-          children: <Widget>[
-            FlutterLogo(
-              size: 100,
-            ),
-            TextFormField(
-              controller: userNameController,
-              validator: (value) {
-                return value.isEmpty ? "Enter your username" : null;
-              },
-              decoration: InputDecoration(
-                  labelText: "Username", hintText: "Enter your username"),
-            ),
-            TextFormField(
-              controller: userPasswordController,
-              obscureText: true,
-              obscuringCharacter: "*",
-              validator: (value) {
-                return value.isEmpty ? "Enter your password" : null;
-              },
-              decoration: InputDecoration(
-                  labelText: "Password", hintText: "Enter your password"),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            RaisedButton(
-                child: Text("Sign In"),
-                color: Colors.green,
-                textColor: Colors.white,
-                onPressed: () async {
-                  if (_formLoginKey.currentState.validate()) {
-                    authService
-                        .login(userNameController.text,
-                            userPasswordController.text)
-                        .then((response) {
-                      setState(() {
-                        user = response;
-                      });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DasdhboradPage()));
-                    }).catchError((error) {
-                      return this._showDialogError(error.toString());
-                    });
-                  }
-                }),
-          ],
-        ),
+        child: Column(children: <Widget>[
+          FlutterLogo(
+            size: 100,
+          ),
+          TextFormField(
+            controller: userNameController,
+            validator: (value) {
+              return value.isEmpty ? "Enter your username" : null;
+            },
+            decoration: InputDecoration(
+                labelText: "Username", hintText: "Enter your username"),
+          ),
+          TextFormField(
+            controller: userPasswordController,
+            obscureText: true,
+            obscuringCharacter: "*",
+            validator: (value) {
+              return value.isEmpty ? "Enter your password" : null;
+            },
+            decoration: InputDecoration(
+                labelText: "Password", hintText: "Enter your password"),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          RaisedButton(
+              child: Text("Sign In"),
+              color: Colors.green,
+              textColor: Colors.white,
+              onPressed: loading ? null : () => handlerOnSubmit())
+        ]),
       ),
     ));
   }
