@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import "dart:convert";
+import "../models/user.model.dart";
 import "../config/config.dart";
 
 class AuthService {
@@ -7,7 +8,7 @@ class AuthService {
     return jsonDecode(data);
   }
 
-  Future<http.Response> login(String userName, String userPassword) async {
+  Future<User> login(String userName, String userPassword) async {
     final String url = "$baseUrl/authen/login";
     final body = jsonEncode(
         <String, String>{'userName': userName, "userPassword": userPassword});
@@ -20,10 +21,14 @@ class AuthService {
         await http.post(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {
-      final responseUserLogin = this.deserialize(response.body);
-      return responseUserLogin;
+      final responseJson = this.deserialize(response.body);
+      if (responseJson['flag'] == false) {
+        throw Exception(responseJson['message']);
+      } else {
+        return User.fromJson(responseJson['data']);
+      }
     } else {
-      throw Exception("Fail to login");
+      throw Exception("Fail to login.");
     }
   }
 }
