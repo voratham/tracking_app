@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
-import 'package:tracking_app/domain/dailyWokring.domain.dart';
-import 'package:tracking_app/models/dailyWorking.model.dart';
+import '../domain/dailyWokring.domain.dart';
+import '../models/dailyWorking.model.dart';
+import '../widgets/currentDailyWorking.dart';
 
 class DasdhboradPage extends StatefulWidget {
   @override
@@ -70,54 +71,6 @@ class _DasdhboradPageState extends State<DasdhboradPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CurrentDailyWorking extends StatelessWidget {
-  DailyWorking dailyWorking;
-
-  CurrentDailyWorking(this.dailyWorking);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(
-            height: 13,
-          ),
-          Text(
-            "DW Number : ${this.dailyWorking.dwNo}",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 13,
-          ),
-          Text(
-            "DW Job Number : ${this.dailyWorking.dailyJobNo}",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 13,
-          ),
-          Text(
-            "Check In : ${this.dailyWorking.startWorkingTime}",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 13,
-          ),
-          Text(
-            "Check Out: ${this.dailyWorking.finishWorkingTime}",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ],
       ),
     );
   }

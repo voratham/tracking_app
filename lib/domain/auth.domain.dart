@@ -33,7 +33,6 @@ class AuthDomain {
     }
 
     final user = User.fromJson(jsonDecode(responseJson));
-    print("user :$user");
     return user;
   }
 }
