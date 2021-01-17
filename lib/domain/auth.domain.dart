@@ -25,12 +25,16 @@ class AuthDomain {
     prefs.setString("user", jsonEncode(user));
   }
 
-  Future<bool> getUser() async {
+  Future<User> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final responseJson = prefs.getString("user") ?? "";
-    if (responseJson.isEmpty) return false;
+    if (responseJson.isEmpty) {
+      throw Exception("User not found");
+    }
+
     final user = User.fromJson(jsonDecode(responseJson));
-    return user.jwtToken.isNotEmpty ? true : false;
+    print("user :$user");
+    return user;
   }
 }
 

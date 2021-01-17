@@ -18,8 +18,8 @@ class LoginPageState extends State<LoginPage> {
   @override
   initState() {
     super.initState();
-    authDomain.getUser().then((response) {
-      if (response) {
+    authDomain.getUser().then((user) {
+      if (user.jwtToken.isNotEmpty) {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DasdhboradPage()));
       }
