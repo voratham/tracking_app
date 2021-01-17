@@ -25,4 +25,13 @@ class User {
     );
     return user;
   }
+
+  Map<String, dynamic> toJson() => {
+        "userName": userName,
+        "employeeId": employeeId,
+        "personName": personName,
+        "roleId": roleId,
+        "refreshToken": refreshToken,
+        "jwtToken": jwtToken,
+      };
 }

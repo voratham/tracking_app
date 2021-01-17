@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import '../pages/dashboard.dart';
 import '../models/user.model.dart';
-import "../adapters/auth.service.dart";
+import "../domain/auth.domain.dart";
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,6 +18,14 @@ class LoginPageState extends State<LoginPage> {
   @override
   initState() {
     super.initState();
+    authDomain.getUser().then((response) {
+      if (response) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DasdhboradPage()));
+      }
+    }).catchError((error) {
+      print(error);
+    });
   }
 
   Future<void> _showDialogError(String title) async {
@@ -52,14 +60,12 @@ class LoginPageState extends State<LoginPage> {
       loading = true;
     });
     if (_formLoginKey.currentState.validate()) {
-      authService
+      authDomain
           .login(userNameController.text, userPasswordController.text)
           .then((response) {
         setState(() {
-          user = response;
           loading = false;
         });
-
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DasdhboradPage()));
       }).catchError((error) {
